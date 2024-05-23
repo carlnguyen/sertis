@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: internal-tools
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-prod
+          image: 3a59n5l3my/backend:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_USER:
+              value: ""
+            - name: DB_PASSWORD
+              value: ""
+            - name: DB_HOST
+              value: ""
+            - name: DB_DATABASE
+              value: ""
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: internal-tools
+  labels:
+    app: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP

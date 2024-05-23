@@ -1,0 +1,48 @@
+namespace: internal-tools
+fullnameOverride: "internal-frontend"
+nameOverride: "internal-frontend"
+replicaCount: 1
+
+image:
+  repository: 3a59n5l3my/frontend
+  pullPolicy: IfNotPresent
+  tag: 1.0.0
+
+env:
+  - name: BACKEND_PATH
+    value: "backend"
+
+service:
+  type: ClusterIP
+  port: 8080
+resources:
+  requests:
+    cpu: "1"
+    memory: "512Mi"
+  limits:
+    cpu: "2"
+    memory: "1Gi"
+livenessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  successThreshold: 1
+  httpGet:
+    path: /healthz
+    port: 8080
+
+
+ingress:
+  enable: true
+  className: "nginx-ingress"
+  metadata:
+    name: internal-tools.company.com
+  hosts:
+    - host:  blog.local
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend
+              port:
+                number: 8080

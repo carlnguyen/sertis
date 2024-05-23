@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: fe
+  name: fetest
+spec:
+  containers:
+  - name: liveness
+    image:  3a59n5l3my/frontend:1.0.0
+    ports:
+    - containerPort: 8080
+    livenessProbe:
+      httpGet:
+        path: /health-check
+        port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 3
+      failureThreshold: 2

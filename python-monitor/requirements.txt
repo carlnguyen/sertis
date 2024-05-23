@@ -1,0 +1,2 @@
+requests==2.28.2
+thread6==0.2.0
