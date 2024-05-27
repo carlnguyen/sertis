@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "internal-frontend.fullname" . }}
+  name: {{ include "sertis.fullname" . }}
   labels:
-    {{- include "internal-frontend.labels" . | nindent 4 }}
+    {{- include "sertis.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "internal-frontend.fullname" . }}
+    name: {{ include "sertis.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

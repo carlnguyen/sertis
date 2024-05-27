@@ -1,6 +1,5 @@
-namespace: internal-tools
-fullnameOverride: "internal-frontend"
-nameOverride: "internal-frontend"
+namespace: apps
+nameOverride: "frontend"
 replicaCount: 1
 
 image:
@@ -10,7 +9,7 @@ image:
 
 env:
   - name: BACKEND_PATH
-    value: "backend"
+    value: "backend-sertis.apps.svc.cluster.local:3000"
 
 service:
   type: ClusterIP
@@ -25,17 +24,17 @@ resources:
 livenessProbe:
   initialDelaySeconds: 15
   periodSeconds: 20
-  successThreshold: 1
+  # successThreshold: 1
   httpGet:
     path: /healthz
     port: 8080
 
 
 ingress:
-  enable: true
-  className: "nginx-ingress"
+  enabled: true
+  className: "ingress-nginx"
   metadata:
-    name: internal-tools.company.com
+    name: frontend
   hosts:
     - host:  blog.local
       paths:

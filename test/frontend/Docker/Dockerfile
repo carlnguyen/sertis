@@ -1,12 +1,10 @@
-FROM node:20
+FROM node:slim
 
 WORKDIR /app
 
 COPY package.json /app
 
-RUN apt update && apt upgrade -y && npm install
-
-COPY *.js /app
+RUN apt update
 
 EXPOSE 8080
 

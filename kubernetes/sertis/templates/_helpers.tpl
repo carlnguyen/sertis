@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "internal-backend.name" -}}
+{{- define "sertis.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "internal-backend.fullname" -}}
+{{- define "sertis.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "internal-backend.chart" -}}
+{{- define "sertis.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "internal-backend.labels" -}}
-helm.sh/chart: {{ include "internal-backend.chart" . }}
-{{ include "internal-backend.selectorLabels" . }}
+{{- define "sertis.labels" -}}
+helm.sh/chart: {{ include "sertis.chart" . }}
+{{ include "sertis.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "internal-backend.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "internal-backend.name" . }}
+{{- define "sertis.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "sertis.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "internal-backend.serviceAccountName" -}}
+{{- define "sertis.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "internal-backend.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "sertis.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

@@ -1,19 +1,17 @@
-FROM node:18
+FROM node:slim
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+COPY app.js ./
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
+RUN chown -R node:node /usr/src/app
 
-# Bundle app source
-COPY . .
+COPY package.json ./ 
+
+RUN apt update && npm install
+
+COPY --chown=node:node . .
 
 EXPOSE 3000
+
 CMD [ "node", "server.js"  ]
